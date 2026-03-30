@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:alpine
+    container_name: postgres_aula11
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: bdaula
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_aula11
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: 123
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+volumes:
+  pgdata: # O ERRO ESTAVA AQUI: Faltava o ':' para indicar que é um mapeamento
